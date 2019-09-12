@@ -11,7 +11,7 @@ win+r >>>
 			entrar no diretorio >>> cd nome_da_pasta
 				criar ambiente virtual >>> py -m venv env
 					ativar ambiente virtual >>> env\Scripts\activate
-
+pip install pyodbc
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 Este projeto tem o caminho >>> D:\_____Impacta_____\Flask_raiz\MyFlaskApp
