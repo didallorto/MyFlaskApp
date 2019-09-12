@@ -22,9 +22,14 @@ def articles():
     return render_template('articles.html', articles = Articles)  
 
 
-@app.route('/articles/<string:id>')
+@app.route('/articles/<string:id>/')
 def article(id):
-    return render_template('articles.html', id=id)   
+    return render_template('article.html', id=id)
+
+
+@app.route('/fotos')
+def fotos():
+    return render_template('fotos.html')
 
 
 if __name__ == '__main__':

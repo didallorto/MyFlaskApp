@@ -4,7 +4,7 @@
     <h1>Article</h1>
     <ul class="list-group"> 
     {% for article in articles %}
-        <li class="list-group-items"><a href="article/{{article.id}}"> {{articles.title}} </a></li>
+        <li class="list-group-item"><a href="article/{{article.id}}"> {{article.title}} </a></li>
     {% endfor %}
     </ul>
 {% endblock %}
