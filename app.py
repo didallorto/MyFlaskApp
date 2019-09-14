@@ -27,9 +27,9 @@ def article(id):
     return render_template('article.html', id=id)
 
 
-@app.route('/fotos')
-def fotos():
-    return render_template('fotos.html')
+@app.route('/photos')
+def photos():
+    return render_template('photos.html')
 
 
 if __name__ == '__main__':
