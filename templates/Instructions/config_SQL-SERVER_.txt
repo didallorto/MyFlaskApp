@@ -1,0 +1,50 @@
+https://pt.stackoverflow.com/questions/325907/python-conectar-sql-com-usuario-e-token/326612#326612
+
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""SQLAlchemy + MS SQL Server.
+
+- {SQL Server} - SQL Server 2000.
+- {SQL Native Client} - SQL Server 2005 (Também conhecido como versão 9.0).
+- {SQL Server Native Client 10.0} - SQL Server 2008.
+- {SQL Server Native Client 11.0} - SQL Server 2012.
+- {ODBC Driver 11 for SQL Server} - SQL Server 2005 ao 2014.
+- {ODBC Driver 13 for SQL Server} - SQL Server 2005 ao 2016.
+- {ODBC Driver 13.1 for SQL Server} - SQL Server 2008 ao 2016.
+- {ODBC Driver 17 for SQL Server} - SQL Server 2008 ao 2017.
+"""
+
+from urllib.parse import quote_plus
+
+import pyodbc
+from sqlalchemy import create_engine
+
+# Verificar se os drivers estão instalados.
+# print([x for x in pyodbc.drivers() if x.startswith('ODBC')])
+# print(pyodbc.drivers())
+
+parametros = (
+    # Driver que será utilizado na conexão
+    'DRIVER={ODBC Driver 17 for SQL Server};'
+    # IP ou nome do servidor.
+    'SERVER=192.168.100.178\SQLEXPRESS;'
+    # Porta
+    'PORT=1433;'
+    # Banco que será utilizado.
+    'DATABASE=pythonSQL;'
+    # Nome de usuário.
+    'UID=python;'
+    # Senha/Token.
+    'PWD=123456')
+
+url_db = quote_plus(parametros)
+
+db = create_engine("mssql+pyodbc:///?odbc_connect=%s" % url_db)
+
+conexao = db.connect()
+
+# resultado = conexao.execute("select * from NomeDaTabela")
+#
+# for row in resultado:
+#     print(row)
+quote_plus(parametros) substitui espaços
