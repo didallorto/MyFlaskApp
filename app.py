@@ -54,6 +54,10 @@ def article(id):
 def photos():
     return render_template('photos.html')
 
+@app.route('/errormessage')
+def errormessage():
+    return render_template('errormessage.html')
+
 
 class RegisterForm(Form):
     name = StringField('Name', [validators.Length(min=1, max=50)])
