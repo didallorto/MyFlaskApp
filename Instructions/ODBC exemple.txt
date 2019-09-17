@@ -1,0 +1,53 @@
+#import pyodbc#
+
+#Select
+def read(conn):
+	print("Read")
+	cursor = conn.cursor()
+	cursor.execute("select * from <table>")
+	for row in cursor:
+		print(f'row = 	{row}')
+	print()
+
+#insert
+def create(conn):
+	print("Create")
+	cursor = conn.curosr()
+	cursor.execcute(
+		'insert into <table> (a, b) values(?,?);', 
+		(3322, "xpto")
+)
+conn.commit()
+read(conn)
+
+#Update
+def update(conn):
+	print("Update")
+	cursor = conn.curosr()
+	cursor.execcute(
+		'update <table> set b = ? where a = ?;',
+		('dogzzz', 3232)
+)
+conn.commit()
+read(conn)
+
+#Delete
+def delete(conn):
+	print("Delete")
+	cursor = conn.curosr()
+	cursor.execcute(
+		'delete from <table> where a > 5;'
+)
+conn.commit()
+read(conn)
+
+		
+
+conn = pyodbc.connect(
+
+	"Driver={SQL Server Native Client 11.0}"
+	"Server=;"
+	"Database=;"
+	"Trusted_Connection=yes;"
+)
+
