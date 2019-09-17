@@ -1,7 +1,6 @@
 from flask import Flask, render_template, flash, redirect, url_for, session, request, logging
 from data import Articles
 from wtforms import Form, StringField, TextAreaField, PasswordField, validators
-import hashlib
 from passlib.hash import sha256_crypt
 #import para sqlserver
 from urllib.parse import quote_plus
@@ -30,6 +29,8 @@ parametros = (
     'PWD=chaterton')
 
 url_db = quote_plus(parametros)
+
+
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pyodbc:///?odbc_connect=%s'% url_db
 
