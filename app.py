@@ -6,8 +6,43 @@ from passlib.hash import sha256_crypt
 from urllib.parse import quote_plus
 import pyodbc
 from sqlalchemy import create_engine
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+
+#conexão
+
+from urllib.parse import quote_plus
+
+import pyodbc
+from sqlalchemy import create_engine
+
+# Verificar se os drivers estão instalados.
+# print([x for x in pyodbc.drivers() if x.startswith('ODBC')])
+# print(pyodbc.drivers())
+
+parametros = (
+    # Driver que será utilizado na conexão
+    'DRIVER={SQL Server};'
+    # IP ou nome do servidor.
+    'SERVER=127.0.0.1;'
+    # Porta
+    'PORT=1433;'
+    # Banco que será utilizado.
+    'DATABASE=myflaskapp;'
+    # Nome de usuário.
+    'UID=sa;'
+    # Senha/Token.
+    'PWD=147852')
+
+url_db = quote_plus(parametros)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pyodbc:///?odbc_connect=%s'% url_db
+
+db = SQLAlchemy(app)
+
+
+
 
 
 
