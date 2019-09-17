@@ -6,28 +6,34 @@ from passlib.hash import sha256_crypt
 #import para sqlserver
 from urllib.parse import quote_plus
 import pyodbc
-from sqlalchemy import create_engine
+from flask_sqlalchemy import SQLAlchemy
+from flask_moment import Moment
+from datetime import datetime
 
 app = Flask(__name__)
-
-parametros = (
-# Driver que será utilizado na conexão#
-    'DRIVER={ODBC Driver 17 for SQL Server}', 
-# IP ou nome do servidor.#
-    'SERVER=DARKMATTER-PC\DARKMATER;', 
-# Porta#
-    'PORT=1433;', 
-# Banco que será utilizado.#
-    'DATABASE=pythonSQL;', 
-# Nome de usuário.#
-    'UID=python;', 
-# Senha/Token.#
-    'PWD=123456'
-)
-
-
+moment = Moment(app)
 
 Articles = Articles()
+
+parametros = (
+    # Driver que será utilizado na conexão
+    'DRIVER={SQL Server};'
+    # IP ou nome do servidor.
+    'SERVER=127.0.0.1;'
+    # Porta
+    'PORT=1433;'
+    # Banco que será utilizado.
+    'DATABASE=myflaskapp;'
+    # Nome de usuário.
+    'UID=darkmatter-PC\darkmatter;'
+    # Senha/Token.
+    'PWD=chaterton')
+
+url_db = quote_plus(parametros)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pyodbc:///?odbc_connect=%s'% url_db
+
+db = SQLAlchemy(app)
 
 
 @app.route('/')
@@ -56,18 +62,18 @@ def photos():
 
 @app.route('/errormessage')
 def errormessage():
-    return render_template('errormessage.html')
+    return render_template('errormessage.html', current_time=datetime.utcnow())
 
 
 class RegisterForm(Form):
-    name = StringField('Name', [validators.Length(min=1, max=50)])
-    username = StringField('Username', [validators.Length(min=4, max=25)])
-    email = StringField('Email', [validators.Length(min=6, max=50)])
+    name = StringField('Name', [validators.DataRequired(), validators.Length(min=1, max=50)])
+    username = StringField('Username', [validators.DataRequired(), validators.Length(min=4, max=25)])
+    email = StringField('Email', [validators.DataRequired(), validators.Length(min=6, max=50)])
     password = PasswordField('Password', [
         validators.DataRequired(),
         validators.EqualTo('confirm', message='Password do not match!')      
     ])
-    confirm = PasswordField('Confirm Password')
+    confirm = PasswordField('Confirm Password', [validators.DataRequired()])
 
     @app.route('/register', methods=['GET', 'POST'])
     def register():

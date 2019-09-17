@@ -1,8 +1,8 @@
-{% extends 'layout.html' %} 
-
+{% extends 'layout.html' %}
 {% block body %}
 
-    <br><br>
-    <h1> {% include 'includes/_404.html' %}</h1>
+
+<p>The local date and time is {{ moment(current_time).format('LLLL') }}.</p>
+<p>That was {{ moment(current_time).fromNow(refresh=True) }}</p>
 
 {% endblock %}

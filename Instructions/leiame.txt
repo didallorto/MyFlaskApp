@@ -1,41 +1,32 @@
 <<< INSTALACAO DO FLASK >>>
 
-REQUISITO >>> PYTHON3 OU SUPERIOR INSTALADO >>>
-	https://www.w3schools.com/python/python_pip.asp  // Apenas referencia, o pip ja esta instalado.
-		(precisa verificar tambem se o virtual enviroment - venv esta instalada)
-	
+instalar python
+	https://www.w3schools.com/python/python_pip.asp
+		Pip nativo do python
+win+r
+	cmd
+		mkdir <nome_diretorio>
+			cd <nome_diretorio>
+				$ sudo pip install virtualenv
+					py -m venv env
+						env\Scripts\activate
 
-win+r >>>
-	cmd >>> 
-		criar diretorio vazio "mkdir nome_da_pasta"
-			entrar no diretorio >>> cd nome_da_pasta
-				criar ambiente virtual >>> py -m venv env
-					ativar ambiente virtual >>> env\Scripts\activate
-pip install pyodbc
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+pip install flask
+	pip install pyodbc
+		(venv) $ pip install flask-sqlalchemy
+			set FLASK_APP=hello.py
+				set FLASK_ENV=development
+					flask run
+						pip install flask-sqlalchemy
+								(venv) $ flask shell
+									from hello import db
+ 										db.create_all()
 
-Este projeto tem o caminho >>> D:\_____Impacta_____\Flask_raiz\MyFlaskApp
 
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+(venv) $ pip install flask-wtf
 
-Instalar Flask >>> pip install flask
 
-VS CODE
-No diretorio nome_da_pasta crie um arquivo app.py()
-{ <<< sem essas chaves!
-from flask import Flask
-
-app = Flask(__name__)
-
-@app.route('/')
-def index():
-    return '<h1> Hello! </h1>' 
-}
-
-volte ao cmd e execute >>> set FLASK_APP=app.py >>> "Permite ao flask saber o que procurar quando for executar"
-
-execute >>> flask run
-
+===============================================================================================
  * Serving Flask app "app.py"
  * Environment: production
    WARNING: This is a development server. Do not use it in a production deployment.
@@ -43,12 +34,6 @@ execute >>> flask run
  * Debug mode: off
  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
 
- ===================
+ ===============================================================================================
 
- TRABALHANDO COM BOOTSTRAP
-
- LAYOUTS
-
- NAO REPETIR EM TODO HTML TODAS AS TAGS, HEAD TAGS, BODY TAGS ENTRE OUTRAS, PARA CADA TEMPLATE...
-
-	CRIAR NOVO ARQUIVO layout.html
+ 
