@@ -2,23 +2,29 @@ from flask import Flask, render_template, flash, redirect, url_for, session, req
 from data import Articles
 from wtforms import Form, StringField, TextAreaField, PasswordField, validators
 from passlib.hash import sha256_crypt
-import hashlib
-#import para sqlserver
+import hashlib, pyodbc, os
 from urllib.parse import quote_plus
-import pyodbc
-from flask_mysqldb import MySQL
+from flask_mysqldb import MySQL  
 from flask_moment import Moment
 from datetime import datetime
 
-app = Flask(_name_)
+app = Flask(__name__)
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
-app.config['MYSQL_HOST'] = 'Localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '147852'
-app.config['MYSQL_DB'] = 'mydb'
-app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+#app.config['MYSQL_HOST'] = 'Localhost'
+#app.config['MYSQL_USER'] = 'root'
+#app.config['MYSQL_PASSWORD'] = '147852'
+#app.config['MYSQL_DB'] = 'mydb'
+#app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+#mysql = MySQL(app)
 
-mysql = MySQL(app)
+cnxn = pyodbc.connect('driver={SQL Server};'
+                      'server=DARKMATTER-PC;'
+                      'database=myflaskapp;'
+                      'trusted_consnection=yes')
+
+cursor = cnxn.cursor()                      
+#>>> cnxn.commit()
 Articles = Articles()
 
 @app.route('/')
@@ -51,32 +57,34 @@ def errormessage():
 
 
 class RegisterForm(Form):
-    name = StringField('Name', [validators.DataRequired(), validators.Length(min=1, max=50)])
+    name = StringField('Name', [validators.Length(min=1, max=50)])
     username = StringField('Username', [validators.DataRequired(), validators.Length(min=4, max=25)])
     email = StringField('Email', [validators.DataRequired(), validators.Length(min=6, max=50)])
-    password = PasswordField('Password', [
-        validators.DataRequired(),
-        validators.EqualTo('confirm', message='Password do not match!')])
-    confirm = PasswordField('Confirm Password', [validators.DataRequired()])
+    password = PasswordField('Password', [validators.DataRequired(), validators.EqualTo('confirm', message='Password do not match!')])
+    confirm = PasswordField('confirm Password', [validators.DataRequired()])
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm(request.form)
-    if request.method == ['POST'] and form.validate():
+    if request.method == 'POST' and form.validate():
         name = form.name.data
         email = form.email.data
         username = form.username.data
         password = sha256_crypt.encrypt(str(form.password.data))
+        cnxn.commit()
+        cnxn.close()
             
-        cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO users(name, email, username, password) VALUES(%s, %s, %s, %s)", (name, email, username, password))
-        mysql.connection.commit()            
-        cur.close()
-        redirect(url_for('index'))
+#       cur = mysql.connection.cursor()
+#       cur.execute("INSERT INTO users(name, email, username, password) VALUES(%s, %s, %s, %s)", (name, email, username, password))
+#       mysql.connection.commit()            
+#       cur.close()
+        
+        flash('Thanks for registering')
+        return redirect(url_for('index'))
       
     return render_template('register.html', form=form)
         
     
-if _name_ == '_main_':
+if __name__ == '__main__':
     app.run(debug=True)
-    app.secret_key = '147852'
+    
