@@ -4,6 +4,7 @@
   {% if field.errors %}
     {% for error in field.errors %}
         <!--<span class="help-inline">{{error}}</span>-->
+        <br>
         <span class="alert alert-danger" role="alert"> {{error}} </span>
     {% endfor %}
   {% endif %}
