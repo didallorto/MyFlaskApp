@@ -48,9 +48,9 @@ def errormessage():
 
 
 class RegisterForm(Form):
-    name = StringField('Name', [validators.Length(min=1, max=50, message=None)])
-    email = StringField('Email', [validators.DataRequired(), validators.Length(min=6, max=50, message=None)])
-    username = StringField('Username', [validators.DataRequired(), validators.Length(min=4, max=25, message=None)]) 
+    name = StringField('Name', [validators.DataRequired(), validators.Length(min=6, max=50)])
+    email = StringField('Email', [validators.DataRequired(), validators.Length(min=5, max=50)])
+    username = StringField('Username', [validators.DataRequired(), validators.Length(min=4, max=25)]) 
     password = PasswordField('Password', [validators.DataRequired(), validators.EqualTo('confirm', message='Password do not match!')])
     confirm = PasswordField('confirm Password', [validators.DataRequired()])
     register_date = datetime.now()
