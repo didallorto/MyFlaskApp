@@ -1,33 +1,28 @@
-from flask import Flask, render_template, flash, redirect, url_for, session, request, logging
+from flask import Flask, flash, redirect, render_template, request, url_for, logging, session
 from data import Articles
 from wtforms import Form, StringField, TextAreaField, PasswordField, validators
 from passlib.hash import sha256_crypt
-import hashlib, pyodbc, os
+import hashlib, os
+import pyodbc
 from urllib.parse import quote_plus
-from flask_mysqldb import MySQL  
 from flask_moment import Moment
 from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
-#app.config['MYSQL_HOST'] = 'Localhost'
-#app.config['MYSQL_USER'] = 'root'
-#app.config['MYSQL_PASSWORD'] = '147852'
-#app.config['MYSQL_DB'] = 'mydb'
-#app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-#mysql = MySQL(app)
+def connect():
+    cnxn = pyodbc.connect('driver={SQL Server};''server=DARKMATTER-PC;''database=myflaskapp1;''trusted_consnection=yes')
+    cnxn.setencoding('utf-8') 
+    return cnxn
+cursor = connect()                    
 
-cnxn = pyodbc.connect('driver={SQL Server};'
-                      'server=DARKMATTER-PC;'
-                      'database=myflaskapp;'
-                      'trusted_consnection=yes')
+#cnxn = pyodbc.connect('driver={SQL Server};''server=DARKMATTER-PC;''database=myflask;''trusted_consnection=yes')
+#cursor = cnxn.cursor()
 
-cursor = cnxn.cursor()                      
-#>>> cnxn.commit()
 Articles = Articles()
 
-@app.route('/')
+@app.route('/') 
 def index():
     return render_template('home.html')
 
@@ -47,21 +42,18 @@ def article(id):
     return render_template('article.html', id=id)
 
 
-@app.route('/photos')
-def photos():
-    return render_template('photos.html')
-
 @app.route('/errormessage')
 def errormessage():
     return render_template('errormessage.html', current_time=datetime.utcnow())
 
 
 class RegisterForm(Form):
-    name = StringField('Name', [validators.Length(min=1, max=50)])
-    username = StringField('Username', [validators.DataRequired(), validators.Length(min=4, max=25)])
-    email = StringField('Email', [validators.DataRequired(), validators.Length(min=6, max=50)])
+    name = StringField('Name', [validators.Length(min=1, max=50, message=None)])
+    email = StringField('Email', [validators.DataRequired(), validators.Length(min=6, max=50, message=None)])
+    username = StringField('Username', [validators.DataRequired(), validators.Length(min=4, max=25, message=None)]) 
     password = PasswordField('Password', [validators.DataRequired(), validators.EqualTo('confirm', message='Password do not match!')])
     confirm = PasswordField('confirm Password', [validators.DataRequired()])
+    register_date = datetime.now()
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -71,16 +63,13 @@ def register():
         email = form.email.data
         username = form.username.data
         password = sha256_crypt.encrypt(str(form.password.data))
-        cnxn.commit()
-        cnxn.close()
-            
-#       cur = mysql.connection.cursor()
-#       cur.execute("INSERT INTO users(name, email, username, password) VALUES(%s, %s, %s, %s)", (name, email, username, password))
-#       mysql.connection.commit()            
-#       cur.close()
-        
-        flash('Thanks for registering')
-        return redirect(url_for('index'))
+        register_date = form.register_date
+
+        cursor.execute("INSERT INTO users(name, email, username, password, register_date) VALUES(?, ?, ?, ?, ?)", (name, email, username, password, register_date)) 
+        cursor.commit()
+        cursor.close()
+        flash("Thanks for registering")
+        return index()
       
     return render_template('register.html', form=form)
         
