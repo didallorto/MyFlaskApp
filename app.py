@@ -42,11 +42,6 @@ def article(id):
     return render_template('article.html', id=id)
 
 
-@app.route('/errormessage')
-def errormessage():
-    return render_template('errormessage.html', current_time=datetime.utcnow())
-
-
 class RegisterForm(Form):
     name = StringField('Name', [validators.DataRequired(), validators.Length(min=6, max=50)])
     email = StringField('Email', [validators.DataRequired(), validators.Length(min=5, max=50)])
@@ -69,7 +64,7 @@ def register():
         cursor.commit()
         cursor.close()
         flash("Thanks for registering")
-        return index()
+        return redirect(url_for('index'))
       
     return render_template('register.html', form=form)
         
