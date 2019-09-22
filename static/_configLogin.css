@@ -1,0 +1,25 @@
+/*html, body{
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    box-sizing: border-box;
+    background: white;
+}
+*/
+.grid-container{
+    height: 50vh;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr; 
+}   
+
+.cx-1{
+ 
+    background: #E8ECEF;
+    grid-column: 1/2;
+    grid-row: 1/2;
+    text-align: center;
+    margin-top: 50px;
+    margin-left: 150px;
+    margin-right: 150px;
+}

@@ -1,0 +1,41 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+        <div class="grid-container">
+            <div class="cx-1">
+                <h1>MyFlaskApp</h1>
+                <h4>Login</h4>
+                <form name="Login"
+                    action="login.py" 
+                    method="POST">
+                
+                <input type="text" 
+                    maxlength="10"
+                    placeholder="  @username"
+                    name="user"
+                    size="10"
+                    required
+                    class="input pull-left"/><br>
+                                
+                        <label></label><br>
+
+                        <input type="password"
+                                maxlength="10" 
+                                placeholder="    password"
+                                name="user"
+                                size="10"
+                                required/><br><br>
+                                
+                        <input type="submit"
+                                value="Enviar"
+                                class="btn btn-warning"/>
+                                
+
+                        <input type="reset"
+                                value="Limpar"
+                                class="btn btn-warning"/>
+                </form>
+            </div>
+
+{% endblock %}
