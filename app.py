@@ -26,6 +26,10 @@ Articles = Articles()
 def index():
     return render_template('home.html')
 
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
 
 @app.route('/about')
 def about():
@@ -46,7 +50,7 @@ class RegisterForm(Form):
     name = StringField('Name', [validators.DataRequired(), validators.Length(min=6, max=50)])
     email = StringField('Email', [validators.DataRequired(), validators.Length(min=5, max=50)])
     username = StringField('Username', [validators.DataRequired(), validators.Length(min=4, max=25)]) 
-    password = PasswordField('Password', [validators.DataRequired(), validators.EqualTo('confirm', message='Password do not match!')])
+    password = PasswordField('Password', [validators.DataRequired(), validators.Length(min=4, max=25), validators.EqualTo('confirm', message='Password do not match!')])
     confirm = PasswordField('confirm Password', [validators.DataRequired()])
     register_date = datetime.now()
 
